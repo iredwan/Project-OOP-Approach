@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project OOP Approach with Local Storage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark text-white">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand fs-1 fw-bolder" href="#">School Register</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse show" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+              <a class="nav-link fw-bold fs-6" aria-current="page" href="index.html">Register Student</a>
+              <a class="nav-link fw-bold fs-6" href="allData.html">View All Student</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-8">
+                <div id="editFormAlert" class="alert alert-success text-center alert-dismissible d-none" role="alert ">
+                    <strong>Success!</strong> Student data updated successfully.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>  
+                  </div>
+            </div>
+        </div>
+    </div>
+    
+
+      <!--input-->
+      <div class="container mt-5">
+        <h1 class="text-center">Edit Student Data</h1>
+        <form id="editForm">
+            <div class="mb-3">
+                <label for="firstname" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstname" required>
+            </div>
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastname" required>
+            </div>
+            <div class="mb-3">
+                <label for="roll" class="form-label">Roll</label>
+                <input type="text" class="form-control" id="roll" required>
+            </div>
+            <div class="mb-3">
+                <label for="class" class="form-label">Class</label>
+                <input type="text" class="form-control" id="class" required>
+            </div>
+            <div class="mb-3">
+                <label for="mobileno" class="form-label">Mobile No.</label>
+                <input type="text" class="form-control" id="mobileno" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Student Data</button>
+        </form>
+    </div>
+    
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const index = params.get('index');
+
+        function loadStudentData() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const student = students[index];
+
+            if (student) {
+                document.getElementById('firstname').value = student.firstname;
+                document.getElementById('lastname').value = student.lastname;
+                document.getElementById('roll').value = student.roll;
+                document.getElementById('class').value = student.studenClass;
+                document.getElementById('mobileno').value = student.mobileno;
+                document.getElementById('email').value = student.email;
+            }
+        }
+
+        document.getElementById('editForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            students[index] = {
+                firstname: document.getElementById('firstname').value,
+                lastname: document.getElementById('lastname').value,
+                roll: document.getElementById('roll').value,
+                studenClass: document.getElementById('class').value,
+                mobileno: document.getElementById('mobileno').value,
+                email: document.getElementById('email').value,
+            };
+                
+                localStorage.setItem('students', JSON.stringify(students));
+                
+                const editFormAlert= document.getElementById('editFormAlert');
+                editFormAlert.classList.remove('d-none');
+                setTimeout(function(){
+                    editFormAlert.classList.add('d-none');
+                    window.location='allData.html';
+                }, 1000); // show alert for 3 seconds after updating the data and hide it after 3 seconds.
+             
+            });
+
+        loadStudentData();
+    </script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
